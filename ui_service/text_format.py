@@ -17,13 +17,14 @@ def text_async_format():
 
     if data is None:
         return jsonify({"message": "Invalid JSON data in the request body."}), 400
-
+    print("starting to format text", data)
     text = data.get('text')
     file_name = data.get('name')
 
     filename = os.path.join(Config.NARRATIVE_RAW, file_name)
     file_util.write_txt_to_file(text, filename)
-    return "success"
+    print("Finished to format text", data)
+    return jsonify("success")
 
 
 @text_format.route('/text/sync_format', methods=['POST'])
@@ -42,12 +43,12 @@ def text_sync_format():
         completion = llama.completion(text)
         elapsed_time = time.time() - start_time
         print("elapsed_time",elapsed_time, "formatted text=",completion)
-        return completion
+        return jsonify(completion)
     else:
-        return ""
+        return jsonify({})
 
 
-@text_format.route('/text/formatted_results')
+@text_format.route('/text/formatted_results',  methods=['POST'])
 def formatted_results():
     files = os.listdir(Config.NARRATIVE_FORMATTED)
     file_details = []
@@ -84,7 +85,7 @@ def download_raw_file(filename):
     return send_file(filepath, as_attachment=True)
 
 
-@text_format.route('/text/format_result/<filename>')
+@text_format.route('/text/format_result/<filename>',  methods=['POST'])
 def get_formatted_text(filename):
     filepath = os.path.join(Config.NARRATIVE_FORMATTED, filename)
     file_content = file_util.read_file(filepath)

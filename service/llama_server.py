@@ -10,10 +10,10 @@ import urllib3
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def completion(prompt, history=""):
-    return ""
+    # return ""
     resp = requests.post(
-        # url="http://lgtcmtaspn1d.nam.nsroot.net:9999/completion",
-        url="https://lgtcmtaspn1d.nam.nsroot.net:8088/completion",
+        url="http://localhost:8080/completion",
+        # url="https://lgtcmtaspn1d.nam.nsroot.net:8088/completion",
         json={"prompt": prompt,
               "temperature": 0.1,
               "top_p": 0.5,

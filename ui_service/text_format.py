@@ -40,7 +40,8 @@ def text_sync_format():
     if text:
         start_time = time.time()
         print("Starting to format text, text=", text)
-        completion = llama.completion(text)
+        # completion = llama.completion(text)
+        completion = "he he "
         elapsed_time = time.time() - start_time
         print("elapsed_time",elapsed_time, "formatted text=",completion)
         return jsonify(completion)
@@ -57,7 +58,7 @@ def formatted_results():
         created_time= os.path.getctime(filepath)
         created_date = datetime.datetime.fromtimestamp(created_time).strftime('%Y-%m-%d %H:%M:%S')
         file_details.append({'name': file, 'created_date': created_date})
-    sorted_files =sorted(file_details, key=lambda  x : x['created_date'])
+    sorted_files =sorted(file_details, key=lambda  x : x['created_date'],  reverse=True)
     return jsonify(sorted_files)
 
 
@@ -87,7 +88,10 @@ def download_raw_file(filename):
 
 @text_format.route('/text/format_result/<filename>',  methods=['POST'])
 def get_formatted_text(filename):
-    filepath = os.path.join(Config.NARRATIVE_FORMATTED, filename)
-    file_content = file_util.read_file(filepath)
+    formmatted_filepath = os.path.join(Config.NARRATIVE_FORMATTED, filename)
+    formatted_text = file_util.read_file(formmatted_filepath)
 
-    return jsonify(file_content)
+    raw_filepath = os.path.join(Config.NARRATIVE_RAW, filename)
+    raw_text = file_util.read_file(raw_filepath)
+
+    return jsonify({'raw_text':raw_text, 'formatted_text': formatted_text})

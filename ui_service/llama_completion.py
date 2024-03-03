@@ -18,7 +18,7 @@ def completion():
     prompt = data.get('prompt')
     if prompt:
         result_completion = llama.completion(prompt)
-        return result_completion
+        return jsonify({'completion': result_completion})
 
     return ""
 

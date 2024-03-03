@@ -7,7 +7,7 @@ import sys
 from narrative_format.narrative_format_thread import narrative_format_thread
 
 print('sys.path:',sys.path)
-sys.path.append('/export/app/aspen-prompt-engineering')
+# sys.path.append('/export/app/aspen-prompt-engineering')
 
 
 app = Flask(__name__)
@@ -30,7 +30,7 @@ def info():
 
 
 if __name__=="__main__":
-    # app.run(use_reloader=False, port=2020,host="127.0.0.1",debug=False)
+    # app.run(use_reloader=False, port=2021,host="127.0.0.1",debug=False)
 
     from waitress import serve
     serve(app, host="0.0.0.0", port=2021)

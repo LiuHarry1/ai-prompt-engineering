@@ -12,7 +12,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 def completion(prompt, history=""):
     # return ""
     resp = requests.post(
-        url="http://localhost:8080/completion",
+        url="http://127.0.0.1:8080/completion",
         # url="https://lgtcmtaspn1d.nam.nsroot.net:8088/completion",
         json={"prompt": prompt,
               "temperature": 0.1,
@@ -23,7 +23,7 @@ def completion(prompt, history=""):
         # json={"prompt": prompt, "history": history},
         # data = '{"prompt": "Building a website can be done in 10 simple steps:","n_predict": 128}',
         headers={"Content-Type": "application/json;charset=utf-8"},
-        verify=False
+        # verify=False
 
     )
     print(resp)

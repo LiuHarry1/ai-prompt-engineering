@@ -8,10 +8,11 @@ from config import *
 import time
 
 narrative_raw = Config.NARRATIVE_RAW
-narrative_formatted = Config.NARRATIVE_FORMATTED
-narrative_list = Config.NARRATIVE_LIST
 narrative_sentence_case = Config.NARRATIVE_SENTENCE_CASE
+# narrative_list = Config.NARRATIVE_LIST
+
 narrative_spell_correction = Config.NARRATIVE_SPELL_CORRECTION
+narrative_formatted = Config.NARRATIVE_FORMATTED
 
 
 def convert_into_paragraph(input_text):
@@ -125,11 +126,11 @@ def format_into_paragraphs(file_name):
     write_list_to_file(formatted_sentences, os.path.join(narrative_spell_correction, file_name))
 
     formatted_sentences = ' '.join(formatted_sentences)
-    write_list_to_file(formatted_sentences, os.path.join(narrative_formatted, file_name))
+    write_list_to_file(formatted_sentences, os.path.join(narrative_spell_correction, file_name+ ".oneline"))
 
-    formatted_sentences = read_file(os.path.join(narrative_formatted, file_name))
+    formatted_sentences = read_file(os.path.join(narrative_spell_correction, file_name+ ".oneline"))
     formatted_sentences = format_list(formatted_sentences)
-    write_list_to_file(formatted_sentences, os.path.join(narrative_formatted, file_name+".formattedlist"))
+    write_list_to_file(formatted_sentences, os.path.join(narrative_formatted, file_name))
 
 
     # formatted_sentences = read_file("../format_postprocessing/" + file_name)

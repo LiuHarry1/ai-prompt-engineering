@@ -14,3 +14,14 @@ conda activate aspen-prompt-engineering
 ## 3. install all python package 
 pip install -r requirements.txt
 
+
+## launch llama2
+
+cd C:\Users\Harry\PycharmProjects\llama.cpp
+
+./server -m ./models/llama-2-7b-chat.Q4_0.gguf
+
+or 
+./main -m ./models/llama-2-7b-chat.Q4_0.gguf --color --ctx_size 2048 -n -1 -ins -b 256 --top_k 10000 --temp 0.2 --repeat_penalty 1.1 -t 8
+
+

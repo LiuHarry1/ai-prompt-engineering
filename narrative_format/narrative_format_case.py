@@ -1,4 +1,4 @@
-import service.llama_server as llama_server
+from service import *
 
 from narrative_format.format_prompt_engineering import *
 from narrative_format.text_util import *
@@ -17,24 +17,24 @@ narrative_formatted = Config.NARRATIVE_FORMATTED
 
 def convert_into_paragraph(input_text):
     prompt = break_into_paragraphs_prompt(input_text)
-    result = llama_server.completion(prompt)
+    result = llama2Server.completion(prompt)
     return result
 
 def get_formatted_sentence(input_text):
 
     # prompt = sentence_case_spelling_error_prompt(input_text)
     prompt = sentence_case_prompt(input_text)
-    result = llama_server.completion(prompt)
+    result = llama2Server.completion(prompt)
     return result
 
 def format_into_sentence_case(input_text):
 
     prompt = sentence_case_prompt_old(input_text)
-    result = llama_server.completion(prompt)
+    result = llama2Server.completion(prompt)
     return result
 def correct_spell_error(input_text):
     prompt = spell_error_prompt(input_text)
-    result = llama_server.completion(prompt)
+    result = llama2Server.completion(prompt)
     return result
 
 def get_formated_sentences(input_text):
@@ -152,7 +152,7 @@ def format_into_list(text):
     all_results = []
     for index, paragraph in enumerate(paragraphs):
         prompt = convert_into_list_prompt(paragraph)
-        result = llama_server.completion(prompt)
+        result = llama2Server.completion(prompt)
         all_results.append(result)
         print(index, "---", result)
 

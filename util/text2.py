@@ -1,26 +1,29 @@
-from diff_match_patch import diff_match_patch
+def format_colon_text(text):
+    lines = text.strip().split('\n')
+    formatted_text = []
 
-def add_missing_words(text_a, text_b):
-    dmp = diff_match_patch()
-    diffs = dmp.diff_main(text_a, text_b)
-    print(diffs)
-    added_words = set()
-    for diff in diffs:
-        if diff[0] == -1:  # Check for deletion in text_b
-            deleted_words = diff[1].split()
-            if len(deleted_words) >= 3:  # Check if three consecutive words are deleted
-                added_words.update(deleted_words)
+    for line in lines:
+        if ":" in line:
+            header, content = line.split(":", 1)
+            formatted_line = f"{header.strip().capitalize()}: {content.strip()}"
+        else:
+            formatted_line = line.strip()
 
-    new_text_b = text_b.split()
-    for i, word in enumerate(text_a.split()):
-        if word in added_words:
-            new_text_b.insert(i, word)
+        formatted_text.append(formatted_line)
 
-    return ' '.join(new_text_b)
+    return '\n'.join(formatted_text)
 
 
-text_a = "he she text This is a sample text to compare."
-text_b = "text to test."
+# Sample text with colons
+text = """
+Title: Introduction to Natural Language Processing
+Author: John Doe
+Date: January 1, 2024
 
-new_text_b = add_missing_words(text_a, text_b)
-print(new_text_b)
+Abstract: This paper provides an overview of Natural Language Processing (NLP) techniques and applications.
+
+Keywords: NLP, Machine Learning, Text Analysis
+"""
+
+formatted_text = format_colon_text(text)
+print(formatted_text)

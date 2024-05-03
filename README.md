@@ -24,4 +24,11 @@ cd C:\Users\Harry\PycharmProjects\llama.cpp
 or 
 ./main -m ./models/llama-2-7b-chat.Q4_0.gguf --color --ctx_size 2048 -n -1 -ins -b 256 --top_k 10000 --temp 0.2 --repeat_penalty 1.1 -t 8
 
+./main -m ./models3/Meta-Llama-3-8B-Instruct.Q4_0.gguf --color --ctx_size 2048 -n -1 -ins -b 256 --top_k 10000 --temp 0.2 --repeat_penalty 1.1 -t 8
+
+
+./main -m ./models3/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf --color --ctx_size 2048 -n -1 -ins -b 256 --top_k 10000 --temp 0.2 --repeat_penalty 1.1 -t 8
+
+./server -m ./models3/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf
+
 

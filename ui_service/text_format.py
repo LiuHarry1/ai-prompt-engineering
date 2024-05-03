@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request, jsonify, send_file
 import os
 from config import *
 import util.file_util as file_util
-import service.llama_server as llama
+from service import *
 import time
 text_format = Blueprint("text_format", __name__)
 
@@ -40,7 +40,7 @@ def text_sync_format():
     if text:
         start_time = time.time()
         print("Starting to format text, text=", text)
-        # completion = llama.completion(text)
+        # completion = llama2Server.completion(text)
         completion = "he he "
         elapsed_time = time.time() - start_time
         print("elapsed_time",elapsed_time, "formatted text=",completion)

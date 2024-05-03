@@ -1,29 +1,40 @@
-def format_colon_text(text):
-    lines = text.strip().split('\n')
-    formatted_text = []
+import markdown
 
-    for line in lines:
-        if ":" in line:
-            header, content = line.split(":", 1)
-            formatted_line = f"{header.strip().capitalize()}: {content.strip()}"
-        else:
-            formatted_line = line.strip()
+# markdown.markdownFromFile(input='xx.md', output='xx.html')
 
-        formatted_text.append(formatted_line)
+ss = """
+ program
 
-    return '\n'.join(formatted_text)
+Here is a simple "Hello, World!" program in Java:
+```
+public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+  }
+}
+```
+Let me explain what's going on:
 
+* `public class HelloWorld`: This line declares a new public class called `HelloWorld`. In Java, everything is an object, and classes are the blueprints for creating objects.
+* `public static void main(String[] args)`: This line declares the `main` method, which is the entry point of the program. The `public` access modifier means that the method can be accessed from outside the class, and the `static` keyword means that the method can be called without creating an instance of the class. The `void` return type means that the method doesn't return any value. The `String[] args` parameter is an array of strings that represents the command-line arguments passed to the program.
+* `System.out.println("Hello, World!")`: This line uses the `println` method of the `System.out` object to print the string "Hello, World!" followed by a newline character to the console.
 
-# Sample text with colons
-text = """
-Title: Introduction to Natural Language Processing
-Author: John Doe
-Date: January 1, 2024
+To run this program, you'll need to compile it into a `.class` file using the `javac` command, and then run it using the `java` command. Here are the steps:
 
-Abstract: This paper provides an overview of Natural Language Processing (NLP) techniques and applications.
+1. Save the code in a file called `HelloWorld.java`.
+2. Compile the code using the following command:
+```
+javac HelloWorld.java
+```
+This will create a `HelloWorld.class` file in the same directory.
+3. Run the program using the following command:
+```
+java HelloWorld
+```
+This will print "Hello, World!" to the console.
 
-Keywords: NLP, Machine Learning, Text Analysis
+I hope this helps! Let me know if you have any questions.
 """
 
-formatted_text = format_colon_text(text)
-print(formatted_text)
+print(ss)
+print(markdown.markdown(ss))

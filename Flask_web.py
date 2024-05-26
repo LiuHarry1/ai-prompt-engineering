@@ -15,6 +15,8 @@ CORS(app)
 
 app.register_blueprint(llama_completion)
 app.register_blueprint(text_format)
+app.register_blueprint(draft_email_generating)
+
 
 # Running a daemon thread in backend to format narrative in narrative folder
 narrative_format_thread.start()

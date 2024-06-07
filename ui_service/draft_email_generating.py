@@ -17,21 +17,14 @@ def generate_draft_email():
     if data is None:
         return jsonify({"message": "Invalid JSON data in the request body."}), 400
     conversations = data["conversations"]
+    user_query = data["user_query"]
+
     print(type(conversations))
-    conversation = conversations[0]
 
-    # generated_draft_email =draft_email_generating_service.generate_draft_email(conversations)
+    generated_draft_email =draft_email_generating_service.generate_draft_email(conversations, user_query)
+    if generated_draft_email is None:
+        generated_draft_email = ""
 
-    generated_draft_email = """
-Hi xx,
-
-please check this 1.
-
-Thanks
-Harry
-                    """
-
+    generated_draft_email = generated_draft_email.replace("Here is the email content to address the new user problem:", "")
+    generated_draft_email = generated_draft_email.strip()
     return  jsonify({'generated_draft_email': generated_draft_email} )
-
-
-

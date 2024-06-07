@@ -28,7 +28,7 @@ class Llama3Server(LLM):
         session.trust_env = False
 
         resp = session.post(
-            url="http://127.0.0.1:9999/completion",
+            url="http://127.0.0.1:8080/completion",
             json={"prompt": prompt,
                   "temperature": float(temperature),
                   "top_p": float(top_p),
@@ -60,10 +60,23 @@ if __name__ == '__main__':
 # Assistant:
 #     """
     prompt = """
-This is a conversation between User and Llama, a friendly chatbot. Llama is helpful, kind, honest, good at writing, and never fails to answer any requests immediately and with precision. 
+Tool Descriptions:
 
-User: hi you
-Llama:"""
+1. Calculator Tool: Performs basic arithmetic operations such as addition, subtraction, multiplication, and division. Parameters: Operation, Number 1, Number 2
+2. Weather Tool: Provides current weather information and forecasts based on location input. Parameters: Location, Date
+3. Translation Tool: Translates text from one language to another. Parameters: Source Language, Target Language, Text
+4. Dictionary Tool: Provides definitions, synonyms, antonyms, and examples of word usage. Parameters: Word
+
+User Query:
+
+"What will the weather be like in New York tomorrow?"
+
+Task:
+
+Based on the user's query and the descriptions of the available tools, decide which tool is most suitable for addressing the query. If a suitable tool is found, also provide the necessary parameters. If none of the tools are appropriate for the query, output "NA".
+the template of response would be [tool name:xxx, parameters:xxx] .
+Response:
+"""
     llama2Server = Llama3Server()
     print(llama2Server.name)
     result = Llama3Server().completion(prompt)

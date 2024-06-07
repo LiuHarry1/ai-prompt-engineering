@@ -28,7 +28,7 @@ class Llama2Server(LLM):
         session.trust_env = False
 
         resp = session.post(
-            url="http://127.0.0.1:9999/completion",
+            url="http://127.0.0.1:8080/completion",
             json={"prompt": prompt,
                   "temperature": float(temperature),
                   "top_p": float(top_p),

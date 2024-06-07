@@ -14,7 +14,7 @@ new user query: "we have inital notification sent , please find the resason behi
 
 no answer and explanation required. only an email is required. don't say any other things."""
 
-draft_email_prompt_template = """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+draft_email_prompt_template_old1 = """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
 
 You are a product support who only reply email to resolve user problem or query. 
 
@@ -29,6 +29,20 @@ here is a new user problem: \"\"\"{user_query}\"\"\"
 Based on your understanding in previous email conversation, please only outputs email content to address this new user problem. If you don't know how to resolve it , just say you can't resolve it. No Note required. no answer and explanation required.
 
 email body:<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+
+
+draft_email_prompt_template = """<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+
+You are a product support (ps) for replying email to resolve new user problem or query. <|eot_id|><|start_header_id|>user<|end_header_id|>
+
+please review following conversation extracted from similar user query email in history. Based on your understanding in this email conversation, please only outputs email content to address this new user problem. If you don't know how to resolve it , just say you can't resolve it. No Note required. no answer and explanation required.
+
+Email  conversation: \"\"\"{conversation}\"\"\"
+
+New user problem: \"\"\"{user_query}\"\"\"
+
+email content: 
+<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
 
 
 def get_draft_email_prompt(conversations: [], user_query: ''):

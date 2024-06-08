@@ -36,6 +36,7 @@ class Llama3Server(LLM):
                   "n_predict": int(n_predict),
                    "presence_penalty": float(presence_penalty),
                   "frequency_penalty": float(frequency_penalty),
+                  "stop": ["<|eot_id|>", "Observation"],
                   "history": history
                   },
             headers={"Content-Type": "application/json;charset=utf-8"},
@@ -77,8 +78,49 @@ Based on the user's query and the descriptions of the available tools, decide wh
 the template of response would be [tool name:xxx, parameters:xxx] .
 Response:
 """
+    react_prompt = """
+<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+Answer the following questions as best you can
+
+you have access to the following tools:
+[Search: search the latest information you needs on the internet, Caculator: use it while calculating something ]
+
+
+user the following format:
+
+Question: the input question you must answer
+Thought: you should always think about what to do
+Action: the action to take, should be one of [{tool_names}]
+Action Input: the input to the action
+Observation: the result of the action
+
+..(this Thought/Action/Action Input/Observation can repeact N times)
+
+Thought: I now know the final answer
+Final Answer: the final answer to the original input question
+
+Begin!
+
+Question: Who is Olivia Wilde's boyfriend? What is his current age raised to the 0.23 power?
+Thought: I will answer the question about Olivia Wilde's boyfriend and calculate his age raised to the 0.23 power.
+Action: Search
+Action Input: "Olivia Wilde's boyfriend"
+Observation: Olivia Wilde started dating Harry Styles after ending her years-long engagement to Jason Sudeikis — see their relationship timeline.
+Thought:
+Action: Search
+Action Input: "Harry Styles age"
+Observation: 29 years
+Thought: 
+Action: Calculator
+Action Input: 29 ^ 0.23
+Observation: 2.169459462491557
+Thought:
+Final Answer: Harry Styles' current age is 29, and when raised to the power of 0.23, it's approximately 2.17
+<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+"""
+
     llama2Server = Llama3Server()
     print(llama2Server.name)
-    result = Llama3Server().completion(prompt)
+    result = Llama3Server().completion(react_prompt)
     print("---")
     print(result)

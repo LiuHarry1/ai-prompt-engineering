@@ -1,5 +1,53 @@
 # input_text will be sentence
 
+format_sentence_case_prompt = """please format the following text into sentence case only, no answer and explanation required. don't miss any words.
+Input Text: "(QUOTE) (TO THE AGENT) I/WE, AN APPLYING SHAREHOLDER, HEREBY MAKE THE REPRESENTATIONS AND ASSURANCE, UPON THE APPLIC ATION FOR TENDER OFFER (HEREAFTER REFERS TO 'THE OFFER') FOR THE COMMON STO CKS OF PAYROLL INC. (4489/JP3836150007)."
+Formatted Text: "(Quote) (To the agent) I/we, an applying shareholder, hereby make the representations and assurance, upon the application for tender offer (hereafter refers to 'the offer') for the common stocks of Payroll Inc. (4489/JP3836150007)."
+Input Text: "THERE IS BLANK SPACE IN THE MID DLE OF WORDS"
+Formatted Text: "There is blank space in the middle of words"
+Input Text: "{text}"
+Formatted Text: """
+
+text_summary_prompt = """summarize the following text. 
+text: "{text}"
+summarized text: """
+
+common_prompt = """
+<s>[INST] <<SYS>>
+{{ system_prompt }}
+<</SYS>>
+
+{{ user_message }} [/INST]
+"""
+
+text_translation_prompt = """translate the following text to English language only, no answer and explanation required. don't miss any words.
+text:"{text}"
+result:
+"""
+
+problem_resolver_prompt = """You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
+User: {text}
+Assistant:
+"""
+
+tool_choose_prompt = """Tool Descriptions:
+
+1. Calculator Tool: Performs basic arithmetic operations such as addition, subtraction, multiplication, and division. Parameters: Operation, Number 1, Number 2
+2. Weather Tool: Provides current weather information and forecasts based on location input. Parameters: Location, Date
+3. Translation Tool: Translates text from one language to another. Parameters: Source Language, Target Language, Text
+4. Dictionary Tool: Provides definitions, synonyms, antonyms, and examples of word usage. Parameters: Word
+
+User Query:
+
+"What will the weather be like in New York tomorrow?"
+
+Task:
+
+Based on the user's query and the descriptions of the available tools, decide which tool is most suitable for addressing the query. If a suitable tool is found, also provide the necessary parameters. If none of the tools are appropriate for the query, output "NA". the template of response would be [tool name:xxx, parameters:xxx] .
+Response:
+"""
+
+
 def sentence_case_prompt_old(input_text):
     prompt = """
 format the following text into sentence case, no answer and explanation required, no note required, don't miss any words.
@@ -23,15 +71,7 @@ Formatted Text: """
     return prompt
 
 def sentence_case_prompt(input_text):
-    prompt = """please format the following text into sentence case only, no answer and explanation required. don't miss any words.
-Input Text: "(QUOTE) (TO THE AGENT) I/WE, AN APPLYING SHAREHOLDER, HEREBY MAKE THE REPRESENTATIONS AND ASSURANCE, UPON THE APPLIC ATION FOR TENDER OFFER (HEREAFTER REFERS TO 'THE OFFER') FOR THE COMMON STO CKS OF PAYROLL INC. (4489/JP3836150007)."
-Formatted Text: "(Quote) (To the agent) I/we, an applying shareholder, hereby make the representations and assurance, upon the application for tender offer (hereafter refers to 'the offer') for the common stocks of Payroll Inc. (4489/JP3836150007)."
-Input Text: "THERE IS BLANK SPACE IN THE MID DLE OF WORDS"
-Formatted Text: "There is blank space in the middle of words"
-Input Text: "+++UPDATE 01 SEP 2023+++"
-Formatted Text: "+++Update 01 Sep 2023+++"
-Input Text: "{text}"
-Formatted Text: """
+    prompt = format_sentence_case_prompt
     prompt = prompt.format(text=input_text)
     print(prompt)
     return prompt

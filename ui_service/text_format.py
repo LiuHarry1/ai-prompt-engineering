@@ -132,6 +132,7 @@ def get_all_prompts():
                             {'title': "Function Calling Prompt", 'prompt': format_prompt_engineering.tool_choose_prompt},
                             {'title': "Problem Resolver Prompt", "prompt": format_prompt_engineering.problem_resolver_prompt},
                             {'title': "ReAct Prompt", "prompt": react_prompt.react_agent_prompt_template},
+                            {'title': "Chatbot Prompt", "prompt": chatbot_prompt.prompt_template},
                             ]
 
     return jsonify(all_prompt_templates)

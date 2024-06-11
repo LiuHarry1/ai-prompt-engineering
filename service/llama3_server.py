@@ -1,6 +1,7 @@
 from service.LLM_server import *
 import requests
 import util.logging_utils as logging_utils
+import prompts.order_chatbot.order_chatbot_prompt as order_chatbot
 
 logger = logging_utils.setup_logger('llama3_server')
 
@@ -119,8 +120,14 @@ Final Answer: Harry Styles' current age is 29, and when raised to the power of 0
 <|eot_id|><|start_header_id|>assistant<|end_header_id|>
 """
 
+    previous_prompt = order_chatbot.order_chatbot_prompt
+    user_query = "I would like order pizza."
+    order_food_prompt  = order_chatbot.get_order_food_prompt(user_query = user_query)
+
     llama2Server = Llama3Server()
     print(llama2Server.name)
-    result = Llama3Server().completion(react_prompt)
+    result = Llama3Server().completion(order_food_prompt)
+
+    previous_prompt = order_food_prompt + "\n" + result
     print("---")
-    print(result)
+    print(previous_prompt)

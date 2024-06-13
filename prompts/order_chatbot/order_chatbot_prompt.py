@@ -32,18 +32,26 @@ coke 3.00，2.00，1.00
 sprite 3.00，2.00，1.00 
 bottled water 5.00
 <|eot_id|><|start_header_id|>assistant<|end_header_id|>
-Welcome to Pizza Palace! I'm OrderBot, here to help you with your order. What can I get for you today?
-I would like order pizza.
-<|eot_id|><|start_header_id|>assistant<|end_header_id|>
 """
 
 
-def get_order_food_prompt(previous_prompt = order_chatbot_prompt, user_query = ''):
+def get_order_food_prompt(previous_prompt, conversations,  user_query = ''):
     try:
-        if user_query:
-            order_chatbot_prompt = previous_prompt+ f"""<|eot_id|><|start_header_id|>user<|end_header_id|>
-{user_query}
-<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+        global order_chatbot_prompt
+
+        conversation_prompt = ""
+        if user_query and conversations:
+            for message in conversations:
+                message_type=  message['type']
+                message_content = message['text']
+                if message_type == 'bot':
+                    conversation_prompt = conversation_prompt + f"""{message_content}<|eot_id|><|start_header_id|>user<|end_header_id|>"""
+                if message_type == 'user':
+                    conversation_prompt = conversation_prompt + f"""{message_content}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+
+
+            order_chatbot_prompt = order_chatbot_prompt+ conversation_prompt
+            logger.info(order_chatbot_prompt)
             return order_chatbot_prompt.strip()
     except Exception as e:
         logger.exception(e)

@@ -18,6 +18,7 @@ app.register_blueprint(text_format)
 app.register_blueprint(draft_email_generating)
 app.register_blueprint(order_food_chatbot)
 app.register_blueprint(chatbot_pb)
+app.register_blueprint(jira_assistant)
 
 
 # Running a daemon thread in backend to format narrative in narrative folder

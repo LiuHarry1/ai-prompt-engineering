@@ -3,7 +3,7 @@ from service import *
 from narrative_format.format_prompt_engineering import *
 from narrative_format.text_util import *
 from narrative_format.format_postprocessing import *
-from narrative_format.pickle_util import *
+from util.pickle_util import *
 from config import *
 import time
 

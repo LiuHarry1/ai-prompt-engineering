@@ -14,6 +14,7 @@ conda activate aspen-prompt-engineering
 ## 3. install all python package 
 pip install -r requirements.txt
 
+git@github.com:LiuHarry1/ai-prompt-engineering.git
 
 ## launch llama2
 

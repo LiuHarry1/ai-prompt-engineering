@@ -32,7 +32,7 @@ def get_jira_message(user_input):
     if jira_information and isinstance(jira_information['acceptanceCriteria'], list):
         acceptanceCriteria_str = ""
         for index, acceptanceCriteria in enumerate(jira_information['acceptanceCriteria']):
-            acceptanceCriteria_str =acceptanceCriteria_str + str(index+1) + ":" + acceptanceCriteria + "\n"
+            acceptanceCriteria_str =acceptanceCriteria_str + str(index+1) + ":" + acceptanceCriteria + "\n\n"
 
         jira_information['acceptanceCriteria'] = acceptanceCriteria_str
 

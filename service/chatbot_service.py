@@ -6,6 +6,6 @@ def get_bot_message(conversations):
     if prompt is None:
         return None
     llm_name = 'llama3'
-    bot_response = LLMFactory.create_llm(llm_name).completion(prompt)
+    bot_response = LLMFactory.create_llm(llm_name).completion(prompt, temperature=0.3)
 
     return bot_response.strip()

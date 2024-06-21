@@ -21,7 +21,7 @@ class Llama2Server(LLM):
     def __init__(self):
         super().__init__("Llama2")
 
-    def completion(self, prompt, temperature=0, top_p=0.5, top_k=5, n_predict=600, presence_penalty=0, frequency_penalty=0, history=""):
+    def completion(self, prompt, temperature=0, top_p=0.5, top_k=5, n_predict=600, presence_penalty=0, frequency_penalty=0, stop = ["<|eot_id|>"], history=""):
         start = time.time()
         session = requests.session()
         # fix 407 error while connecting llama3

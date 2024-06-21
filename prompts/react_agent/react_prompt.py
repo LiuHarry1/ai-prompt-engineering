@@ -32,21 +32,20 @@ Question: {question}
 
 react_prompt_test1= """
 <|begin_of_text|><|start_header_id|>user<|end_header_id|>
-You are an assistant to give people the answer of questions.
+You are a helpful, respectful and honest assistant. Always answer as helpfully as possible.
 
 only If the user demands a final answer but you are unsure, execute the thought/action/action input/observation sequence,
-otherwise , you can answer it directly.
 
+if you have required information on Observation, then provide final answer directly. No double-check required, No confirm required.
 
 you have access to the following tools:
-[Search: search the latest information you needs on the internet, Calculator: use it while calculating something ]
-
+[{tool_name_and_description}]
 
 To use a tool, please use the following format:
 
 Question: the input question you must answer
 Thought: you should always think about what to do
-Action: the action to take, should be one of [Search, Calculator]
+Action: the action to take, should be one of [{tool_names}]
 Action Input: the input to the action
 Observation: the result of the action
 ..(this Thought/Action/Action Input/Observation can repeat N times)
@@ -55,8 +54,7 @@ Final Answer: the final answer to the original input question
 
 Begin!
 
-Question: Hi, how are you?
-<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+Question: Question: {question}
 """
 
 react_agent_prompt_template = """
@@ -64,6 +62,7 @@ react_agent_prompt_template = """
 Answer the following questions as best you can.
 
 If the user demands a final answer but you are unsure, execute the thought/action/action input/observation sequence.
+if you have required information on Observation, then provide final answer directly. No double-check required, No confirm required.
 
 you have access to the following tools:
 [{tool_name_and_description}]
@@ -79,23 +78,27 @@ Observation: the result of the action
 ..(this Thought/Action/Action Input/Observation can repeat N times)
 
 Thought: I now know the final answer
-Final Answer: the final answer to the original input question
+Final Answer: the final answer to the original input question.
 
 Begin!
 
 Question: {question}
-<|eot_id|><|start_header_id|>assistant<|end_header_id|>
 """
 
 
-def get_react_prompt(tool_name_and_description, tool_names,  question: ''):
+def get_react_prompt(tool_name_and_description, tool_names,  question: '', bot_response= ''):
     try:
 
-        draft_email_promp = react_agent_prompt_template.format(tool_name_and_description = tool_name_and_description,
+        draft_email_prompt = react_prompt_test1.format(tool_name_and_description = tool_name_and_description,
                                                                tool_names = tool_names,
                                                                question = question)
 
-        return draft_email_promp.strip()
+        if bot_response and len(bot_response) !=0:
+            draft_email_prompt = draft_email_prompt + bot_response
+
+        draft_email_prompt = draft_email_prompt + "<|eot_id|><|start_header_id|>assistant<|end_header_id|>"
+
+        return draft_email_prompt.strip()
     except Exception as e:
         logger.exception(e)
         return None

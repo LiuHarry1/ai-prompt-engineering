@@ -32,8 +32,8 @@ or
 
 ./server -m ./models3/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf -b 2256 --ctx_size 2048
 
-./server -m ./models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf -b 2256 --ctx_size 2048
+./server -m ./models/Meta-Llama-3-8B-Instruct.Q4_K_M.gguf -b 2256 --ctx_size 1024
 
-server -m ./models3/Meta-Llama-3-8B-Instruct.Q4_0.gguf -b 2256 --ctx_size 2048
+./server -m ./models3/Meta-Llama-3-8B-Instruct.Q4_0.gguf -b 2256 --ctx_size 1048
 
 

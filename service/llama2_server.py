@@ -21,11 +21,11 @@ class Llama2Server(LLM):
     def __init__(self):
         super().__init__("Llama2")
 
-    def completion(self, prompt, temperature=0, top_p=0.5, top_k=5, n_predict=600, presence_penalty=0, frequency_penalty=0, stop = ["<|eot_id|>"], history=""):
+    def completion(self, prompt, temperature=0, top_p=0.5, top_k=5, n_predict=600, presence_penalty=0, frequency_penalty=0, stop = ["</s>", "Observation"], history=""):
         start = time.time()
         session = requests.session()
         # fix 407 error while connecting llama3
-        session.trust_env = False
+        # session.trust_env = False
 
         resp = session.post(
             url="http://127.0.0.1:8080/completion",
@@ -36,6 +36,7 @@ class Llama2Server(LLM):
                   "n_predict": int(n_predict),
                   "presence_penalty": float(presence_penalty),
                   "frequency_penalty": float(frequency_penalty),
+                  # "stop": stop,
                   "history": history
                   },
             headers={"Content-Type": "application/json;charset=utf-8"},
@@ -48,7 +49,7 @@ class Llama2Server(LLM):
             total_time = time.time() - start
             token_size = len(content)
             print(f'Total time: {total_time}, Token size: {token_size} Time per token : {total_time / token_size}')
-        print(content)
+        print("Response:  ",content)
 
         return content
 

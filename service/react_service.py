@@ -65,8 +65,11 @@ def get_bot_response(user_input):
     bot_response = ''
 
     for i in range(3):
-        print(f"bot_response: {bot_response}")
+        # print(f"bot_response: {bot_response}")
         prompt = react_prompt.get_react_prompt(tool_and_description, tool_names, user_input, bot_response)
+        print("====== Following is prompt ====", )
+        print(prompt)
+        print("====== End of prompt ====", )
 
         print("calling llm at "+ str(i)+ " times")
         new_bot_response = LLMFactory.create_llm(llm_name).completion(prompt, temperature=0.3, stop=["<|eot_id|>","Observation"])
@@ -79,9 +82,7 @@ def get_bot_response(user_input):
         if (action and action_input and (len(action)!=0) and (len(action_input) != 0)):
 
             executed_result =execute_tool(action, action_input)
-            bot_response = bot_response + "Observation:" + executed_result + "\nThought:"
-
-            bot_response = new_bot_response + bot_response
+            bot_response = new_bot_response + "Observation:" + executed_result
         else:
             return new_bot_response
 

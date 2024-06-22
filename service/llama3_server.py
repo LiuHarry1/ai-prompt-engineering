@@ -28,31 +28,37 @@ class Llama3Server(LLM):
         # fix 407 error while connecting llama3
         session.trust_env = False
 
-        resp = session.post(
-            url="http://127.0.0.1:8080/completion",
-            json={"prompt": prompt,
-                  "temperature": float(temperature),
-                  "top_p": float(top_p),
-                  "top_k": int(top_k),
-                  "n_predict": int(n_predict),
-                   "presence_penalty": float(presence_penalty),
-                  "frequency_penalty": float(frequency_penalty),
-                  "stop": stop,
-                  "history": history
-                  },
-            headers={"Content-Type": "application/json;charset=utf-8"},
-            verify=False
+        try:
+            resp = session.post(
+                url="http://127.0.0.1:8080/completion",
+                json={"prompt": prompt,
+                      "temperature": float(temperature),
+                      "top_p": float(top_p),
+                      "top_k": int(top_k),
+                      "n_predict": int(n_predict),
+                      "presence_penalty": float(presence_penalty),
+                      "frequency_penalty": float(frequency_penalty),
+                      "stop": stop,
+                      "history": history
+                      },
+                headers={"Content-Type": "application/json;charset=utf-8"},
+                verify=False
 
-        )
-        print(resp)
-        content = resp.json()["content"]
-        if content:
-            total_time = time.time() - start
-            token_size = len(content)
-            print(f'Total time: {total_time}, Token size: {token_size} Time per token : {total_time / token_size}')
-        print(content)
+            )
+            print(resp)
+            content = resp.json()["content"]
+            if content:
+                total_time = time.time() - start
+                token_size = len(content)
+                print(f'Total time: {total_time}, Token size: {token_size} Time per token : {total_time / token_size}')
+            print("========Following is llama3 response =========")
+            print(content)
+            print("========End of Llama3 response =========")
 
-        return content
+            return content
+        except Exception as e:
+            logger.exception(e)
+            return ""
 
 if __name__ == '__main__':
     # prompt = "please translate the following text into English, no notes and no explanation. text:'你很坏', result: "
@@ -122,7 +128,7 @@ Final Answer: Harry Styles' current age is 29, and when raised to the power of 0
 
     previous_prompt = order_chatbot.order_chatbot_prompt
     user_query = "I would like order pizza."
-    order_food_prompt  = order_chatbot.get_order_food_prompt(user_query = user_query)
+    order_food_prompt  = order_chatbot.get_order_food_prompt(user_query, "", "")
 
     llama2Server = Llama3Server()
     print(llama2Server.name)

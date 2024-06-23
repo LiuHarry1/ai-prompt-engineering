@@ -1,23 +1,30 @@
 import prompts.react_agent.react_prompt as react_prompt
 from service.LLMFactory import *
+from function_calling import *
 
-tool_and_description = """{[{tool_name: "shut_down_component", required_parameters: "component name", description: "a tool to shut down a certain component. " },
-{tool_name: "start_up_component", required_parameters: "component name", description: "a tool to start up or roll out a certain component. " },
-{tool_name: "scale_component", required_parameters: "component name", description: "a tool to scale up or down pods." },
-{tool_name: "select_pod_count", required_parameters: "component name", description: "a tool to select the number of pods for a certain component. " }
-]}
-"""
-
-tool_names = "shut_down_component, start_up_component, scale_component, select_pod_count"
 
 def get_action_and_action_input(bot_response):
     try:
-        thought_index = bot_response.index("Thought:")
-        if thought_index != None:
-            thought_start = bot_response.index("Thought:") + 9
-            thought_end = bot_response.index("\n", thought_start)
-            thought = bot_response[thought_start:thought_end].strip()
-
+        if "Thought:" in bot_response and "Action:" in bot_response:
+            thought_index = bot_response.index("Thought:")
+            action_index = bot_response.index("Action:")
+            if thought_index != None:
+                thought_start = bot_response.index("Thought:") + 9
+                thought = bot_response[thought_start:action_index].strip()
+        elif "Thought:" in bot_response :
+            thought_index = bot_response.index("Thought:")
+            if thought_index != None:
+                thought_start = bot_response.index("Thought:") + 9
+                thought_end = bot_response.index("\n", thought_start)
+                thought = bot_response[thought_start:thought_end].strip()
+        elif ("Action:" in bot_response):
+            action_index = bot_response.index("Action:")
+            thought = bot_response[:action_index].strip()
+        else:
+            thought = bot_response
+    except Exception as e:
+        logger.exception(e)
+    try:
         action_index = bot_response.index("Action:")
         if action_index != None:
             action_start = bot_response.index("Action:") + 8
@@ -26,16 +33,24 @@ def get_action_and_action_input(bot_response):
 
             if action == "None" or action == "none":
                 return thought, None, None
+    except Exception as e:
+        # logger.exception(e)
+        action = None
+
+    try:
         action_input_index = bot_response.index("Action Input:")
         if action_input_index != None:
             input_start = bot_response.index("Action Input:") + 13
             input_end = bot_response.find("\n", input_start)
             input_ = bot_response[input_start:input_end].strip()
+            if "?" in input_:
+                return thought, None, None
 
         print(f"Action: {action}")
         print(f"Action Input: {input_}")
     except Exception as e:
-        return None, None, None
+        # logger.exception(e)
+        input_ = None
 
     return thought, action, input_
 
@@ -61,24 +76,13 @@ def remove_words_before_thought(bot_response):
         return bot_response
 
 
-def execute_tool(tool_name, inputs):
-    print(f"calling {tool_name} with input: {inputs}")
-
-    if tool_name == "select_pod_count":
-        return "The number of announcement pods is 3."
-    if tool_name == "shut_down_component":
-        return "The announcement component is now down. "
-    if tool_name == "start_up_component":
-        return "The announcement component is now started and ready for use."
-    if tool_name == "scale_component":
-        return "The number of announcement pods is 2."
-
-    return ""
-
 def get_bot_response(conversation):
 
     llm_name = "llama3"
     bot_response = ''
+    executed_tool = []
+    tool_and_description = tools.get_tool_name_and_descpritions()
+    tool_names = tools.get_tool_names()
 
     inital_prompt = react_prompt.get_inital_react_prompt(tool_and_description, tool_names, conversation)
 
@@ -95,23 +99,24 @@ def get_bot_response(conversation):
         final_answer = get_final_answer(new_bot_response)
         if final_answer:
             print("Final Answer:", final_answer)
-            return final_answer
+            return final_answer, executed_tool
 
         thought , action, action_input = get_action_and_action_input(new_bot_response)
         if (action and action_input and (len(action)!=0) and (len(action_input) != 0)):
             new_bot_response = remove_words_before_thought(new_bot_response)
-            executed_result =execute_tool(action, action_input)
+            executed_result, url, input_data = tools.call_tool(action, action_input)
+            executed_tool.append({"url":url, "input_data": input_data})
 
             bot_response = new_bot_response + "\nObservation:" + executed_result + "\nThought:"
             # bot_response = new_bot_response + "\nObservation:" + executed_result
         elif (thought):
             # no action required to be executed. just normal chat.
-            return thought
+            return thought, executed_tool
         else:
-            return new_bot_response
+            return new_bot_response, executed_tool
 
 
-    return bot_response.strip()
+    return bot_response.strip(), executed_tool
 
 if __name__ == '__main__':
     # user_question = "how many pods does announcement component have? "
@@ -122,16 +127,24 @@ if __name__ == '__main__':
 
     # user_question = "hi you, "
 
-    conversation = [{"type": "bot", "text": "hello, I am robot" } ,{"type": "user", "text": "hello" },
-                    {"type": "bot", "text": "I'm happy to help you. What's on your mind?"},{"type": "user", "text": "please start announcement component" },
-                    {"type": "bot", "text": "Now that the announcement component is started, what would you like to do next?"},
-                    {"type": "user", "text": "how many pods does announcement component have?"},
-                    {"type": "bot","text": "The announcement component has 3 pods."},
-                    {"type": "user", "text": "please shut down announcement component."},
-                    ]
+    # conversation = [{"type": "bot", "text": "hello, I am robot" } ,{"type": "user", "text": "hello" },
+    #                 {"type": "bot", "text": "I'm happy to help you. What's on your mind?"},{"type": "user", "text": "please start announcement component" },
+    #                 {"type": "bot", "text": "Now that the announcement component is started, what would you like to do next?"},
+    #                 {"type": "user", "text": "how many pods does announcement component have?"},
+    #                 {"type": "bot","text": "The announcement component has 3 pods."},
+    #                 {"type": "user", "text": "can you help me scale announcement component?"},
+    #                 {"type": "bot", "text": "I'm waiting for the number of pods to scale the announcement component. Please provide the number of pods you want to scale it to."},
+    #                 {"type": "user", "text": "4 pods"},
+    #                 ]
+    #
+    # response, executed_tool  = get_bot_response(conversation)
+    # print(response)
+    # print(executed_tool)
 
-    response = get_bot_response(conversation)
-    print(response)
+    response = """  I need to know how many pods the user wants to scale the announcement component to. 
+Action: scale_component
+Action Input: announcement component, ? (need user input)"""
+    print(get_action_and_action_input(response))
 
 
 

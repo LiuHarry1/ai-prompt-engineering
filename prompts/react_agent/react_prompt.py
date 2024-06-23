@@ -66,13 +66,15 @@ only If the user demands answer but you are unsure, execute the thought/action/a
 if you have required information on Observation, then provide final answer directly. No double-check required, No confirm required.
 
 you have access to the following tools:
-[{tool_name_and_description}]
+{tool_name_and_description}
+
+before using those tool, if you want to request user to provide input data which you don't know. please don't output action and action input.
 
 To use a tool, please use the following format:
 
 Question: the input question you must answer
 Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
+Action: the action to take, should be one of {tool_names}
 Action Input: the input to the action
 Observation: the result of the action
 
@@ -82,6 +84,7 @@ Thought: I now know the final answer
 Final Answer: the final answer to the original input question
 
 Begin!
+<|eot_id|><|start_header_id|>assistant<|end_header_id|>
 """
 
 react_prompt_llama2= """

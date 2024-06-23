@@ -17,6 +17,6 @@ def react_bot():
 
     conversation = data.get('conversation')
 
-    bot_response  = react_service.get_bot_response(conversation)
+    bot_response, executed_tools  = react_service.get_bot_response(conversation)
 
-    return  jsonify({'bot_response': bot_response} )
+    return  jsonify({'bot_response': bot_response, "executed_tools": executed_tools} )

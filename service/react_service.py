@@ -13,21 +13,21 @@ tool_names = "shut_down_component, start_up_component, scale_component, select_p
 def get_action_and_action_input(bot_response):
     try:
         thought_index = bot_response.index("Thought:")
-        if thought_index:
+        if thought_index != None:
             thought_start = bot_response.index("Thought:") + 9
             thought_end = bot_response.index("\n", thought_start)
             thought = bot_response[thought_start:thought_end].strip()
 
         action_index = bot_response.index("Action:")
-        if action_index:
+        if action_index != None:
             action_start = bot_response.index("Action:") + 8
             action_end = bot_response.index("\n", action_start)
             action = bot_response[action_start:action_end].strip()
 
-            if action == "None":
+            if action == "None" or action == "none":
                 return thought, None, None
         action_input_index = bot_response.index("Action Input:")
-        if (action_input_index):
+        if action_input_index != None:
             input_start = bot_response.index("Action Input:") + 13
             input_end = bot_response.find("\n", input_start)
             input_ = bot_response[input_start:input_end].strip()
@@ -53,7 +53,7 @@ def get_final_answer(bot_response):
 def remove_words_before_thought(bot_response):
     try:
         index = bot_response.index("Thought:")
-        if index:
+        if index != None:
             bot_response = bot_response[index:].strip()
             if bot_response:
                 return bot_response
@@ -75,14 +75,17 @@ def execute_tool(tool_name, inputs):
 
     return ""
 
-def get_bot_response(user_input):
+def get_bot_response(conversation):
 
     llm_name = "llama3"
     bot_response = ''
 
+    inital_prompt = react_prompt.get_inital_react_prompt(tool_and_description, tool_names, conversation)
+
     for i in range(3):
         # print(f"bot_response: {bot_response}")
-        prompt = react_prompt.get_react_prompt(tool_and_description, tool_names, user_input, bot_response)
+
+        prompt = react_prompt.get_react_prompt_by_new_thought(inital_prompt, bot_response)
         print("====== Following is prompt ====", )
         print(prompt)
         print("====== End of prompt ====", )
@@ -115,10 +118,20 @@ if __name__ == '__main__':
     # user_question = "please start announcement component. "
     # user_question = "please shut down announcement component. "
     # user_question = "please stop announcement component."
-    # user_question = "please scale up announcement to 2. "
+    user_question = "please scale up announcement to 2. "
 
-    user_question = "hi you, "
-    response = get_bot_response(user_question)
+    # user_question = "hi you, "
+
+    conversation = [{"type": "bot", "text": "hello, I am robot" } ,{"type": "user", "text": "hello" },
+                    {"type": "bot", "text": "I'm happy to help you. What's on your mind?"},{"type": "user", "text": "please start announcement component" },
+                    {"type": "bot", "text": "Now that the announcement component is started, what would you like to do next?"},
+                    {"type": "user", "text": "how many pods does announcement component have?"},
+                    {"type": "bot","text": "The announcement component has 3 pods."},
+                    {"type": "user", "text": "please shut down announcement component."},
+                    ]
+
+    response = get_bot_response(conversation)
     print(response)
+
 
 

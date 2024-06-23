@@ -68,20 +68,21 @@ if you have required information on Observation, then provide final answer direc
 you have access to the following tools:
 {tool_name_and_description}
 
-before using those tool, if you want to request user to provide input data which you don't know. please don't output action and action input.
-
 To use a tool, please use the following format:
 
 Question: the input question you must answer
 Thought: you should always think about what to do
 Action: the action to take, should be one of {tool_names}
-Action Input: the input to the action
+Action Input: the input to the action.
+
 Observation: the result of the action
 
 ..(this Thought/Action/Action Input/Observation can repeat N times)
 
 Thought: I now know the final answer
 Final Answer: the final answer to the original input question
+
+If the required information is missing or unclear, politely ask the user for the specific details needed to proceed without explanation.
 
 Begin!
 <|eot_id|><|start_header_id|>assistant<|end_header_id|>
@@ -153,7 +154,9 @@ def get_inital_react_prompt(tool_name_and_description, tool_names, conversations
                     conversation_prompt = conversation_prompt + f"""{message_content}<|eot_id|><|start_header_id|>user<|end_header_id|>"""
                 if message_type == 'user':
                     if index == (len(conversations)-1):
-                        conversation_prompt = conversation_prompt +  "\nQuestion: {question}\n".format(question = message_content)
+                        # conversation_prompt = conversation_prompt +  "\nQuestion: {question}\n".format(question = message_content)
+                        conversation_prompt = conversation_prompt + "{question}\n".format(
+                            question=message_content)
                     else:
                         conversation_prompt = conversation_prompt + f"""{message_content}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
 

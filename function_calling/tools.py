@@ -16,7 +16,7 @@ tools = [{"name": "shut_down_component",
          },
         {"name": "scale_component",
          "inputs": ["component name", "the number of pods to be scaled to"],
-         "description": "a tool to scale up or down pods.",
+         "description": "a tool to scale up or down to a certain number of pods.",
          "web_url": "web rest api scale_component",
          "return_message": "The number of announcement pods is 2.",
          "error_message": "error while calling the tool of scale_component"

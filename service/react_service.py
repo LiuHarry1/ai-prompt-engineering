@@ -11,45 +11,39 @@ def get_action_and_action_input(bot_response):
             if thought_index != None:
                 thought_start = bot_response.index("Thought:") + 9
                 thought = bot_response[thought_start:action_index].strip()
-        elif "Thought:" in bot_response :
+                bot_response= bot_response.replace(bot_response[:action_index],"")
+        elif "Thought:" in bot_response and "\n" in bot_response :
             thought_index = bot_response.index("Thought:")
             if thought_index != None:
                 thought_start = bot_response.index("Thought:") + 9
                 thought_end = bot_response.index("\n", thought_start)
                 thought = bot_response[thought_start:thought_end].strip()
+                bot_response= bot_response.replace(bot_response[:thought_end],"")
         elif ("Action:" in bot_response):
             action_index = bot_response.index("Action:")
             thought = bot_response[:action_index].strip()
+            bot_response = bot_response.replace(bot_response[:action_index], "")
         else:
             thought = bot_response
+            return thought, None, None
     except Exception as e:
         logger.exception(e)
-    try:
-        action_index = bot_response.index("Action:")
-        if action_index != None:
-            action_start = bot_response.index("Action:") + 8
-            action_end = bot_response.index("\n", action_start)
-            action = bot_response[action_start:action_end].strip()
 
-            if action == "None" or action == "none":
+    try:
+        if "Action:" in bot_response and "Action Input:" in bot_response:
+            action_index = bot_response.index("Action:")
+            if action_index != None:
+                action_start = bot_response.index("Action:") + 8
+                action_input_start = bot_response.index("Action Input:")
+                action = bot_response[action_start:action_input_start].strip()
+                input_ = bot_response.replace(bot_response[:action_input_start], "")
+                if action == "None" or action == "none":
+                    return thought, None, None
+            else:
                 return thought, None, None
     except Exception as e:
         # logger.exception(e)
         action = None
-
-    try:
-        action_input_index = bot_response.index("Action Input:")
-        if action_input_index != None:
-            input_start = bot_response.index("Action Input:") + 13
-            input_end = bot_response.find("\n", input_start)
-            input_ = bot_response[input_start:input_end].strip()
-            if "?" in input_:
-                return thought, None, None
-
-        print(f"Action: {action}")
-        print(f"Action Input: {input_}")
-    except Exception as e:
-        # logger.exception(e)
         input_ = None
 
     return thought, action, input_
@@ -141,9 +135,9 @@ if __name__ == '__main__':
     # print(response)
     # print(executed_tool)
 
-    response = """  I need to know how many pods the user wants to scale the announcement component to. 
-Action: scale_component
-Action Input: announcement component, ? (need user input)"""
+    response = """Thought: I should respond with a friendly greeting.
+Action: None
+Action Input: None"""
     print(get_action_and_action_input(response))
 
 

@@ -30,6 +30,13 @@ tools = [{"name": "shut_down_component",
          }
 ]
 
+def get_all_tool_descriptions():
+
+    all_tool_descriptions = ""
+    for index , tool in enumerate(tools):
+        all_tool_descriptions = all_tool_descriptions + str(index+1) + ". "+ tool['name'] + "\nInputs: " + str(tool["inputs"]) + "\nDescription: " +  tool["description"] + "\n\n"
+
+    return all_tool_descriptions
 
 def get_tool_name_and_descpritions():
     tool_name_and_descriptions = []
@@ -74,10 +81,11 @@ def web_call(tool_name, inputs ):
 if __name__ == '__main__':
     # print(get_tool_name_and_descpritions())
     # print(call_tool("select_pod_count", "announcement"))
-    print(tools)
-    tools[0]['name'] = 'fuck'
-
-    print(tools)
-    print(get_tool_name_and_descpritions())
+    # print(tools)
+    # tools[0]['name'] = 'fuck'
+    #
+    # print(tools)
+    # print(get_tool_name_and_descpritions())
+    print(get_all_tool_descriptions())
 
 

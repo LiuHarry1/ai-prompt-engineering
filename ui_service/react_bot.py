@@ -3,12 +3,12 @@ import os
 from service import *
 import util.logging_utils as logging_utils
 
-logger = logging_utils.setup_logger('function_calling_robot')
+logger = logging_utils.setup_logger('react_robot')
 
-function_calling_robot_pb = Blueprint("function_calling_robot", __name__)
+react_robot_pb = Blueprint("react_robot", __name__)
 
-@function_calling_robot_pb.route('/function-calling-robot', methods=['POST', 'GET'])
-def react_bot():
+@react_robot_pb.route('/react_robot', methods=['POST', 'GET'])
+def react_robot():
 
     data = request.json
     print("completion...." + str(data))

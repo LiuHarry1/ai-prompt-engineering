@@ -52,6 +52,7 @@ if you want to execute a tool, only output in json format with below keys:
 tool_name, inputs
 
 If the input is a general chat or question, respond appropriately.
+Keep the answer short and concise.
 
 <|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
 

@@ -9,7 +9,7 @@ you are a rebot to help people generate summary, description, acceptance criteri
 if this user story involve code change then DevelopmentRequired would be true. otherwise, it is false.  only investigation or research doesn't require code change.
 
 provide them in json format with below keys:
-summary, description, acceptanceCriteria, DevelopmentRequired
+summary, description, acceptanceCriteria, developmentRequired
 <|eot_id|><|start_header_id|>user<|end_header_id|>
 user story: {user_input}
 <|eot_id|><|start_header_id|>assistant<|end_header_id|>

@@ -20,6 +20,7 @@ app.register_blueprint(order_food_chatbot)
 app.register_blueprint(chatbot_pb)
 app.register_blueprint(jira_assistant)
 app.register_blueprint(function_calling_robot_pb)
+app.register_blueprint(exception_solver_pb)
 
 
 

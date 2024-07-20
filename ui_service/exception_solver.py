@@ -16,10 +16,12 @@ def fix_exception():
     print(exception_stack)
     print(code_snippets)
 
+    fixed_code, root_cause = exception_solver_service.get_fixedcode_and_rootcause(exception_stack, code_snippets)
+
     # Process the data and determine the fixed code and root cause
     # This is a placeholder for your actual logic
-    fixed_code = "Fixed code based on the provided stack and snippets"
-    root_cause = "Determined root cause of the exception"
+    # fixed_code = "Fixed code based on the provided stack and snippets"
+    # root_cause = "Determined root cause of the exception"
 
     return jsonify({
         'fixedCode': fixed_code,

@@ -6,6 +6,7 @@ import service.chatbot_service as chat_service
 import service.jira_assistant_service as jira_assistant_service
 import service.react_service as react_service
 import service.function_calling_service as function_calling_service
+import service.exception_solver_service as exception_solver_service
 
 llama2Server = Llama2Server()
 llama3Server = Llama3Server()

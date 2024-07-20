@@ -13,6 +13,9 @@ def fix_exception():
     exception_stack = data['exceptionStack']
     code_snippets = data['codeSnippets']
 
+    print(exception_stack)
+    print(code_snippets)
+
     # Process the data and determine the fixed code and root cause
     # This is a placeholder for your actual logic
     fixed_code = "Fixed code based on the provided stack and snippets"

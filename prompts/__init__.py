@@ -4,3 +4,4 @@ import prompts.chatbot.chatbot_prompt as chatbot_prompt
 import prompts.order_chatbot.order_chatbot_prompt as order_chatbot_prompt
 import prompts.jira_assistant.jira_assistant_prompt as jira_assistant_prompt
 import prompts.function_call.function_call_prompt as function_call_prompt
+import prompts.exception_solver.exception_solver_prompt as exception_solver_prompt

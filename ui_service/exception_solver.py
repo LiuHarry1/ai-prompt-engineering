@@ -10,21 +10,19 @@ exception_solver_pb = Blueprint("exception_solver", __name__)
 @exception_solver_pb.route('/fix-exception', methods=['POST'])
 def fix_exception():
     data = request.json
-    exception_stack = data['exceptionStack']
-    code_snippets = data['codeSnippets']
+    # exception_stack = data['exceptionStack']
+    # code_snippets = data['codeSnippets']
 
-    print(exception_stack)
-    print(code_snippets)
+    print(data)
+    # print(exception_stack)
+    # print(code_snippets)
 
-    fixed_code, root_cause = exception_solver_service.get_fixedcode_and_rootcause(exception_stack, code_snippets)
+    response= exception_solver_service.get_fixedcode_and_rootcause(data)
 
     # Process the data and determine the fixed code and root cause
     # This is a placeholder for your actual logic
     # fixed_code = "Fixed code based on the provided stack and snippets"
     # root_cause = "Determined root cause of the exception"
 
-    return jsonify({
-        'fixedCode': fixed_code,
-        'rootCause': root_cause
-    })
+    return jsonify({'data': response})
 

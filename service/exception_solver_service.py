@@ -6,8 +6,9 @@ import re
 pattern = re.compile(r"```json(.*?)```", re.DOTALL)
 pattern2 = re.compile(r"{(.*?)}", re.DOTALL)
 
-def get_fixedcode_and_rootcause(exception_stack, code_snippets):
-    prompt = exception_solver_prompt.get_exception_solver_prompt(exception_stack, code_snippets)
+def get_fixedcode_and_rootcause(data):
+
+    prompt = exception_solver_prompt.get_exception_solver_prompt(data)
     if prompt is None:
         return None
     llm_name = 'llama3'

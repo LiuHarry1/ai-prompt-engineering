@@ -1,5 +1,61 @@
 global tools
 
+
+tools_new = [{
+        "name": "shut_down_component",
+        "description": "a tool to shut down a certain component. ",
+        "parameters": {"type": "object",
+                       "properties":{
+                            "componentName": {
+                                "type": "string",
+                                "description": "Component name"
+                          },
+                        "required": ["componentName"],
+                        }
+                    },
+        },
+        { "name": "start_up_component",
+            "description": "a tool to start up or roll out a certain component. ",
+            "parameters": {"type": "object",
+                           "properties":{
+                                "componentName": {
+                                    "type": "string",
+                                    "description": "Component name"
+                              },
+                            "required": ["componentName"],
+                            }
+                        },
+            },
+        {"name": "scale_component",
+         "description": "a tool to scale up or down to a certain number of pods. ",
+         "parameters": {"type": "object",
+                        "properties": {
+                            "componentName": {
+                                "type": "string",
+                                "description": "Component name"
+                            },
+                            "pods_number": {
+                                "type": "int",
+                                "description": "the number of pods to be scaled to "
+                            },
+                            "required": ["componentName", "pods_number"],
+                        }
+                        },
+         },
+        {"name": "select_pod_count",
+         "description": "a tool to select the current number of pods for a certain component.",
+         "parameters": {"type": "object",
+                        "properties": {
+                            "componentName": {
+                                "type": "string",
+                                "description": "Component name"
+                            },
+                            "required": ["componentName"],
+                        }
+                        },
+         }
+]
+
 tools = [{"name": "shut_down_component",
           "inputs": ["component name"],
           "description": "a tool to shut down a certain component. ",

@@ -64,17 +64,18 @@ class Llama3_1Server(LLM):
 import json
 if __name__ == '__main__':
 
-    user_question= "I am very sad";
+    # user_question= "I am very sad";
+    user_question = "can you remove announcement component ?"
     prompt = f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-You are an intelligent chatbot designed to assist users in managing various components using the following tools. 
+You are an intelligent chatbot designed to assist users in managing various components using the following tools.
 
 
-Use the function  '{tools_new[0]["name"]}' to: '{tools_new[0]["description"]}',
+Use the function '{tools_new[0]["name"]}' to: '{tools_new[0]["description"]}'
 '{tools_new[1]["name"]}' to: '{tools_new[1]["description"]}'
 '{tools_new[2]["name"]}' to: '{tools_new[2]["description"]}'
- '{tools_new[3]["name"]}' to: '{tools_new[3]["description"]}'
+'{tools_new[3]["name"]}' to: '{tools_new[3]["description"]}'
 
-{tools_new}
+{json.dumps(tools_new)}
 
 If a you choose to call a function ONLY reply in the following format:
 
@@ -89,7 +90,7 @@ Reminder:
 If the input is a general chat or question, respond appropriately.
 Keep the answer short and concise.
 
-don't output any function if required parameters are not specified.
+don't output any function if user didn't provide required parameters.
 
 <|eot_id|><|start_header_id|>user<|end_header_id|>
 
@@ -100,6 +101,20 @@ don't output any function if required parameters are not specified.
 # <function=spotify_trending_songs>{"n": "5"}</function><|eom_id|><|start_header_id|>ipython<|end_header_id|>
 # ["1. BIRDS OF A FEATHER by Billie Eilish", "2. Espresso by Sabrina Carpenter", "3. Please Please Please by Sabrina Carpenter", "4. Not Like Us by Kendrick Lamar", "5. Gata Only by FloyyMenor, Cris Mj"]<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
 
+    prompt = f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
+You are an intelligent chatbot designed to assist users in managing various components using specific tools. 
+You can also engage in general chat and answer questions. Here are the tools you can use:
+{tools_new}
+When a user provides an input, understand their request, and if it pertains to any of the tools, 
+prompt them for necessary details and execute the corresponding tool. 
+
+if you want to execute a tool, Respond in the format {{"name": function name, "parameters": dictionary of argument name and its value}}. Do not use variables.
+
+If the input is a general chat or question, respond appropriately.
+Keep the answer short and concise.
+<|eot_id|><|start_header_id|>user<|end_header_id|>
+{user_question}<|eot_id|><|start_header_id|>assistant<|end_header_id|>
+"""
     print(prompt)
     # print(json.dumps(tools_new[0]))
     result = Llama3_1Server().completion(prompt)

@@ -16,6 +16,9 @@ pip install -r requirements.txt
 
 git@github.com:LiuHarry1/ai-prompt-engineering.git
 
+https://huggingface.co/bullerwins/Meta-Llama-3.1-8B-Instruct-GGUF/tree/main
+https://huggingface.co/bartowski/Meta-Llama-3.1-8B-Instruct-GGUF
+
 ## launch llama2
 
 cd C:\Users\Harry\PycharmProjects\llama.cpp
